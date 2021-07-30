@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Animated, StyleSheet, View} from "react-native";
 import {PlayerItem} from "../../libraries/types/Types";
+import { AntDesign } from '@expo/vector-icons';
 import WheelRouletteItem from "./WheelRouletteItem";
 
 interface WheelRouletteProps {
@@ -9,9 +10,16 @@ interface WheelRouletteProps {
     freeRotateNum: number       // 무료하게 도는 거리
     duration: number            // 도는 시간
     containerStyle: any
+    onPlayerSelected: (player: PlayerItem) => void
 }
 
-const WheelRoulette = ({ players, freeRotateNum, duration, rolling, containerStyle }: WheelRouletteProps) => {
+const sleep = (ms: number) => {
+    return new Promise(resolve => {
+        setTimeout(resolve, ms)
+    })
+}
+
+const WheelRoulette = ({ players, freeRotateNum, duration, rolling, containerStyle, onPlayerSelected }: WheelRouletteProps) => {
     const [rollPaper, setRollPaper] = useState<PlayerItem[]>([])
 
     const topDown = -(players.length * freeRotateNum * 60) + 120
@@ -33,13 +41,17 @@ const WheelRoulette = ({ players, freeRotateNum, duration, rolling, containerSty
             // TODO 당첨자 선출
             const target = Math.floor(Math.random() * (players.length))
 
-            console.log("target:", target, players[target])
-
             Animated.timing(currentPos, {
                 toValue: topDown + ((rollPaper.length - 1) * 60) - (target * 60),
                 duration: duration,
                 useNativeDriver: true
             }).start()
+
+
+            sleep(duration).then(() => {
+                onPlayerSelected(players[target])
+            })
+
         } else {
             Animated.timing(currentPos, {
                 toValue: topDown,
@@ -51,6 +63,11 @@ const WheelRoulette = ({ players, freeRotateNum, duration, rolling, containerSty
 
     return (
         <View style={{...Styles.container, ...containerStyle}}>
+            <View style={Styles.arrow}>
+                <AntDesign name="caretright" size={24} color="black" />
+                <View style={{ flex: 1 }} />
+                <AntDesign name="caretleft" size={24} color="black" />
+            </View>
             <Animated.View
                 style={{
                     width: "100%",
@@ -78,6 +95,19 @@ WheelRoulette.defaultProps = {
 const Styles = StyleSheet.create({
     container: {
         overflow: "hidden",
+    },
+    arrow: {
+        position: "absolute",
+        width: "100%",
+        height: 60,
+        top: 60,
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        borderBottomWidth: 1,
+        borderTopWidth: 1,
+        borderBottomColor: "#b4b4b4",
+        borderTopColor: "#b4b4b4"
     }
 })
 
