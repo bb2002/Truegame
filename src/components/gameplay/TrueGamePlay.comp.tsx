@@ -1,16 +1,34 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {ImageBackground, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import WheelRoulette from "../common/WheelRoulette";
 import useGameInit from "../../hooks/useGameInit";
 import Container from "../common/Container";
 import {Button} from "react-native-elements";
-import {Challenge, PlayerItem} from "../../libraries/types/Types";
+import {Challenge, ChallengeItem, PlayerItem} from "../../libraries/types/Types";
+import {getTrueGamePlayDesign, TrueGamePlayDesignPlatform} from "../../libraries/config/LevelDesign.conf";
+import {getChallenge} from "../../libraries/firebase/ChallengeLoader";
+import {AntDesign, Ionicons} from '@expo/vector-icons';
+import TimerComp from "../common/Timer.comp";
+import {StackNavigationProp} from "@react-navigation/stack";
+import {GameInitParam} from "../../libraries/types/PageTypes";
 
-const TrueGamePlayComp = () => {
+interface TrueGamePlayCompProps {
+    navigation: StackNavigationProp<GameInitParam>
+}
+
+const TrueGamePlayComp = ({ navigation }: TrueGamePlayCompProps) => {
     const { gameInit } = useGameInit()
     const [rolling, setRolling] = useState(false)
     const [step, setStep] = useState(0)
-    const [player, setPlayer] = useState<PlayerItem | undefined>(undefined)
+    const [player, setPlayer] = useState<PlayerItem>(gameInit.players[0])
+    const [design, setDesign] = useState<TrueGamePlayDesignPlatform>(getTrueGamePlayDesign(gameInit.level))
+    const [playCount, setPlayCount] = useState(1)
+    const [selChallenge, setSelChallenge] = useState<ChallengeItem | undefined>(undefined)
+
+    useEffect(() => {
+        const cfg = getTrueGamePlayDesign(gameInit.level)
+        setDesign(cfg)
+    }, [gameInit.level])
 
     const onPlayerSelected = (player: PlayerItem) => {
         setPlayer(player)       // 플레이어 선택
@@ -19,11 +37,19 @@ const TrueGamePlayComp = () => {
 
     const onChallengeSelected = (challenge: Challenge) => {
         setStep(2)
+        setPlayCount(playCount + 1)
+
+        getChallenge(gameInit.level, (challenge) => {
+            setSelChallenge(challenge)
+        }, gameInit.players, player, playCount, challenge)
     }
 
     return (
-        <Container style={Styles.containerOuter}>
-            <View style={Styles.containerInner}>
+        <Container style={{ backgroundColor: design.backgroundColorOuter }}>
+            <View style={{...Styles.containerInner, backgroundColor: design.backgroundColorInner}}>
+                <Ionicons name="arrow-back-outline" size={36}
+                          color="white" onPress={() => navigation.goBack()} />
+
                 <WheelRoulette
                     players={gameInit.players}
                     rolling={rolling}
@@ -32,7 +58,7 @@ const TrueGamePlayComp = () => {
                     containerStyle={{
                         borderRadius: 16,
                         borderWidth: 4,
-                        borderColor: "#27ae60",
+                        borderColor: design.rouletteColor,
                         marginHorizontal: 16,
                         marginTop: 72,
                         marginBottom: 32
@@ -65,25 +91,38 @@ const TrueGamePlayComp = () => {
                             onPress={() => setRolling(!rolling)}
                             disabled={rolling}>
                             <ImageBackground
-                                source={require("../../../assets/icons/level_highteen_icon.png")}
+                                source={design.rouletteButtonIcon}
                                 style={Styles.rollButtonImg}
                                 resizeMode="cover">
-                                <Text style={Styles.rollButtonText}>클릭</Text>
+                                <Text style={{...Styles.rollButtonText, backgroundColor: design.rouletteTextBackgroundColor}}>클릭</Text>
                             </ImageBackground>
                         </TouchableOpacity>
+
                     )
                 }
 
                 {
                     step === 2 && (
-                        <TouchableOpacity
-                            onPress={() => {
-                                setRolling(false)
-                                setStep(0)
-                            }}
-                            style={Styles.challengeTextView}>
-                            <Text>여기에 질문이 보입니다.</Text>
-                        </TouchableOpacity>
+                        <View style={{ flex: 1 }}>
+                            <TimerComp time={3} color='black' />
+
+                            <TouchableOpacity
+                                onPress={() => {
+                                    setRolling(false)
+                                    setStep(0)
+                                }}
+                                style={Styles.challengeTextView}>
+                                {
+                                    selChallenge === undefined ? (
+                                        <AntDesign name="loading1" size={24} color="black" />
+                                    ) : (
+                                        <Text style={Styles.challengeText}>{selChallenge.text}</Text>
+                                    )
+                                }
+
+                            </TouchableOpacity>
+                        </View>
+
                     )
                 }
             </View>
@@ -92,13 +131,9 @@ const TrueGamePlayComp = () => {
 };
 
 const Styles = StyleSheet.create({
-    containerOuter: {
-        backgroundColor: "#3498db"
-    },
     containerInner: {
         flex: 1,
         margin: 24,
-        backgroundColor: "#ecf0f1",
         borderRadius: 16
     },
     gameButton: {
@@ -118,12 +153,18 @@ const Styles = StyleSheet.create({
     },
     rollButtonText: {
         fontSize: 32,
-        backgroundColor: "#27ae60",
         color: "white"
     },
     challengeTextView: {
         width: "100%",
-        flex: 1
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    challengeText: {
+        fontSize: 32,
+        textAlign: "center",
+        lineHeight: 48
     }
 })
 

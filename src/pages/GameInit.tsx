@@ -18,10 +18,6 @@ const GameInit = ({ navigation }: GameInitProps) => {
 
     return (
         <View style={{ flex: 1 }}>
-            <Header
-                centerComponent={{ text: "게임 설정", style: { color: "white", fontSize: 16, fontWeight: "bold" } }}
-                leftComponent={gameInit.page === 1 ? <AntDesign name="left" size={24} color="white" onPress={() => setGamePage(0)}/> : <View />}
-            />
             <Container style={Styles.containerOuter}>
                 <View style={Styles.containerInner}>
                     {

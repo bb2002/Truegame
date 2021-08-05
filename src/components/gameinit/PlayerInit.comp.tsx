@@ -4,7 +4,7 @@ import {ScrollView, StyleSheet, Text} from "react-native";
 import PlayerInputCont from "../common/PlayerInputCont";
 import {Button} from "react-native-elements";
 import {AntDesign} from "@expo/vector-icons";
-import Toast from "react-native-simple-toast";
+import Toast from 'react-native-root-toast';
 import useGameInit from "../../hooks/useGameInit";
 
 const PlayerInitComp = () => {

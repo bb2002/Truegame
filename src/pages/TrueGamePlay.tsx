@@ -1,20 +1,26 @@
 import React from 'react';
-import {SafeAreaView, StyleSheet, Platform} from "react-native";
-import WheelRoulette from "../components/common/WheelRoulette";
+import {SafeAreaView, StyleSheet, Platform, View, Text} from "react-native";
+import { Ionicons } from '@expo/vector-icons';
 import TrueGamePlayComp from "../components/gameplay/TrueGamePlay.comp";
+import {Header} from "react-native-elements";
+import {StackNavigationProp} from "@react-navigation/stack";
+import {GameInitParam} from "../libraries/types/PageTypes";
 
+interface TrueGamePlayProps {
+    navigation: StackNavigationProp<GameInitParam>
+}
 
-const TrueGamePlay = () => {
+const TrueGamePlay = ({ navigation }: TrueGamePlayProps) => {
     return (
         <SafeAreaView style={Styles.container}>
-            <TrueGamePlayComp />
+            <TrueGamePlayComp navigation={navigation}/>
         </SafeAreaView>
+
     );
 };
 
 const Styles = StyleSheet.create({
     container: {
-        paddingTop: Platform.OS === "android" ? 24 : 0,
         height: "100%"
     }
 })
