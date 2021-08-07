@@ -51,7 +51,7 @@ export function getChallenge(
          */
         selectedChallenge.text = selectedChallenge.text.replace("$_MANONLY", "")
         selectedChallenge.text = selectedChallenge.text.replace("$_GIRLONLY", "")
-        selectedChallenge.text = selectedChallenge.text.replace("$player", me.playerName)
+        selectedChallenge.text = selectedChallenge.text.replace(/\$player/ig, me.playerName)
 
 
         /**
@@ -76,7 +76,7 @@ export function getChallenge(
         }
 
         let selectedTarget = filteredTargets[getRandomInt(0, filteredTargets.length)]
-        selectedChallenge.text = selectedChallenge.text.replaceAll("$target", selectedTarget.playerName)
+        selectedChallenge.text = selectedChallenge.text.replace(/\$target/ig, selectedTarget.playerName)
 
         callback(selectedChallenge)
     })
