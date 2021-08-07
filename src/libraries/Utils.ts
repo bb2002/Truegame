@@ -5,7 +5,7 @@ export const sleep = (ms: number) => {
 }
 
 export const checkIsPro = () => {
-    return false
+    return true
 }
 
 export const PRO_VERSION_GOOGLEPLAY = "market://details?id=kr.saintdev.truegamepro"

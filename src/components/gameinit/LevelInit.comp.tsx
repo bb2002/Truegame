@@ -24,6 +24,8 @@ const LevelInitComp = ({ navigation }: LevelInitCompProps) => {
         switch(value) {
             case GameLevel.LEVEL_HIGHTEEN:
             case GameLevel.LEVEL_19:
+                navigation.navigate("TrueGamePlay")
+                break
             case GameLevel.LEVEL_29:
                 if(checkIsPro()) {
                     navigation.navigate("TrueGamePlay")
@@ -35,7 +37,11 @@ const LevelInitComp = ({ navigation }: LevelInitCompProps) => {
             case GameLevel.LEVEL_COUPLE_HOT:
             case GameLevel.LEVEL_COUPLE_EASY:
                 if(gameInit.players.length === 2) {
-                    navigation.navigate("TrueGamePlay")
+                    if(value === GameLevel.LEVEL_COUPLE_HOT && !checkIsPro()) {
+                        setProModal(true)
+                    } else {
+                        navigation.navigate("TrueGamePlay")
+                    }
                 } else {
                     Alert.alert("인원 수 오류", "이 모드는 2명만 플레이 가능합니다.", [
                         {
@@ -43,14 +49,13 @@ const LevelInitComp = ({ navigation }: LevelInitCompProps) => {
                         }
                     ])
                 }
-
+                break
             case GameLevel.LEVEL_SKINSHIP:
                 if(checkIsPro()) {
                     navigation.navigate("SkinShipGamePlay")
                 } else {
                     setProModal(true)
                 }
-
         }
     }
 

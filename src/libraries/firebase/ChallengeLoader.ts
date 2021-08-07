@@ -14,7 +14,8 @@ export function getChallenge(
             challenges.push({
                 playCount: a.playcount,
                 text: a.text,
-                type: a.type == "true" ? Challenge.TRUE : Challenge.TRY
+                type: a.type == "true" ? Challenge.TRUE : Challenge.TRY,
+                timer: a.timer
             })
         }
 
@@ -24,6 +25,7 @@ export function getChallenge(
         let filteredChallenges
         filteredChallenges = challenges.filter(chal => chal.type === type)              // 도전인지, 진실인지 필터
         filteredChallenges = filteredChallenges.filter(chal => chal.playCount <= playCount)     // 플레이 카운트 필터
+        filteredChallenges = filteredChallenges.map(chal => ({ ...chal, text: chal.text.trim() } as ChallengeItem))
 
 
         if(me.playerGender === Gender.WOMAN) {
@@ -51,6 +53,7 @@ export function getChallenge(
         selectedChallenge.text = selectedChallenge.text.replace("$_GIRLONLY", "")
         selectedChallenge.text = selectedChallenge.text.replace("$player", me.playerName)
 
+
         /**
          * 타깃을 뽑습니다.
          */
@@ -73,11 +76,20 @@ export function getChallenge(
         }
 
         let selectedTarget = filteredTargets[getRandomInt(0, filteredTargets.length)]
-        selectedChallenge.text = selectedChallenge.text.replace("$target", selectedTarget.playerName)
+        selectedChallenge.text = selectedChallenge.text.replaceAll("$target", selectedTarget.playerName)
 
         callback(selectedChallenge)
     })
 }
+
+export function getSkinShips(callback: (actions: string[], positions: string[]) => void) {
+    firebase.database().ref('skinship/').on("value", snapshot => {
+        const actions = snapshot.val().action as string[]
+        const positions = snapshot.val().position as string[]
+        callback(actions, positions)
+    })
+}
+
 
 function throwNotFoundChallenge() {
     return {

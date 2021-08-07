@@ -104,7 +104,12 @@ const TrueGamePlayComp = ({ navigation }: TrueGamePlayCompProps) => {
                 {
                     step === 2 && (
                         <View style={{ flex: 1 }}>
-                            <TimerComp time={3} color='black' />
+                            {
+                                selChallenge?.timer !== undefined && (
+                                    <TimerComp time={selChallenge.timer} color='black' />
+                                )
+                            }
+
 
                             <TouchableOpacity
                                 onPress={() => {

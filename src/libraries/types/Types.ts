@@ -27,4 +27,5 @@ export type ChallengeItem = {
     playCount: number,          // 판 수가 이거 이상 높아야 합니다.
     text: string,               // 질문입니다.
     type: Challenge             // 도전 형태입니다.
+    timer?: number              // 타이머 설정입니다.
 }
