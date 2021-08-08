@@ -1,13 +1,14 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {StyleSheet, View, Animated} from "react-native";
-import {AntDesign, Ionicons} from '@expo/vector-icons';
+import React from 'react';
+import {StyleSheet, View} from "react-native";
+import {AntDesign} from '@expo/vector-icons';
 import Container from "../components/common/Container";
-import {Button, Header} from "react-native-elements";
+import {Button} from "react-native-elements";
 import PlayerInitComp from "../components/gameinit/PlayerInit.comp";
 import useGameInit from "../hooks/useGameInit";
 import LevelInitComp from "../components/gameinit/LevelInit.comp";
 import {StackNavigationProp} from "@react-navigation/stack";
 import {GameInitParam} from "../libraries/types/PageTypes";
+import { useFonts } from 'expo-font';
 
 interface GameInitProps {
     navigation: StackNavigationProp<GameInitParam>
@@ -40,6 +41,7 @@ const GameInit = ({ navigation }: GameInitProps) => {
                                     return <Button
                                         title="레벨 선택"
                                         type="clear"
+                                        titleStyle={{fontFamily: 'netmarbleM'}}
                                         onPress={() => setGamePage(1)}
                                         icon={<AntDesign name="staro" size={18} color="#2288DD" />}
                                     />

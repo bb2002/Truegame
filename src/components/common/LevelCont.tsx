@@ -66,11 +66,13 @@ const Styles = StyleSheet.create({
         color: "white",
         fontSize: 18,
         fontWeight: "bold",
-        marginRight: "auto"
+        marginRight: "auto",
+        fontFamily: 'netmarbleB'
     },
     levelContent: {
         color: "white",
-        fontSize: 12
+        fontSize: 12,
+        fontFamily: 'netmarbleL'
     }
 })
 

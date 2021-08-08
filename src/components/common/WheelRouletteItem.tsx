@@ -26,7 +26,8 @@ const Styles = StyleSheet.create({
     text: {
         fontSize: 18,
         fontWeight: "bold",
-        color: "black"
+        color: "black",
+        fontFamily: 'netmarbleB'
     }
 })
 

@@ -71,13 +71,13 @@ const TrueGamePlayComp = ({ navigation }: TrueGamePlayCompProps) => {
                             <Button
                                 title="진실"
                                 containerStyle={Styles.gameButton}
-                                titleStyle={{ fontSize: 24 }}
+                                titleStyle={{ fontSize: 24, fontFamily: 'netmarbleB' }}
                                 onPress={() => onChallengeSelected(Challenge.TRUE)}
                                 buttonStyle={{ paddingTop: 16, paddingBottom: 16 }} />
                             <Button
                                 title="도전"
                                 containerStyle={Styles.gameButton}
-                                titleStyle={{ fontSize: 24 }}
+                                titleStyle={{ fontSize: 24, fontFamily: 'netmarbleB' }}
                                 onPress={() => onChallengeSelected(Challenge.TRY)}
                                 buttonStyle={{ paddingTop: 16, paddingBottom: 16, backgroundColor: "#e74c3c" }} />
                         </View>
@@ -158,7 +158,8 @@ const Styles = StyleSheet.create({
     },
     rollButtonText: {
         fontSize: 32,
-        color: "white"
+        color: "white",
+        fontFamily: 'netmarbleB'
     },
     challengeTextView: {
         width: "100%",
@@ -169,7 +170,8 @@ const Styles = StyleSheet.create({
     challengeText: {
         fontSize: 32,
         textAlign: "center",
-        lineHeight: 48
+        lineHeight: 48,
+        fontFamily: 'netmarbleM'
     }
 })
 

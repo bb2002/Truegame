@@ -48,20 +48,22 @@ const SkinShipGamePlayComp = ({ navigation }: SkinShipGamePlayCompProps) => {
                 />
                 <Text style={Styles.textOfConst}>님이</Text>
                 <WheelRouletteSmall
+                    rolling={rolling}
+                    strings={actions}
+                    duration={1500} />
+                <View style={{ marginTop: 16, marginBottom: 16 }} />
+                <WheelRouletteSmall
                     rolling={rolling && ignoreIndex !== -1}
                     strings={gameInit.players.map(value => value.playerName)}
                     duration={1500}
                     ignoreIndex={ignoreIndex} />
-                <Text style={Styles.textOfConst}>님의</Text>
+                <View style={{ marginTop: 8, marginBottom: 8 }} />
                 <WheelRouletteSmall
                     rolling={rolling}
                     strings={positions}
                     duration={1500} />
                 <Text style={Styles.textOfConst}>에</Text>
-                <WheelRouletteSmall
-                    rolling={rolling}
-                    strings={actions}
-                    duration={1500} />
+
                 <TouchableOpacity style={{
                     marginLeft: "auto",
                     marginRight: "auto",
@@ -87,7 +89,8 @@ const SkinShipGamePlayComp = ({ navigation }: SkinShipGamePlayCompProps) => {
                                     fontSize: 24,
                                     color: "white",
                                     fontWeight: "bold",
-                                    backgroundColor: "#691F99"
+                                    backgroundColor: "#691F99",
+                                    fontFamily: 'netmarbleB'
                                 }}>클릭</Text>
                             </ImageBackground>
                         )

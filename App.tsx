@@ -12,6 +12,7 @@ import SkinShipGamePlay from "./src/pages/SkinShipGamePlay";
 import { RootSiblingParent } from 'react-native-root-siblings';
 import firebase from 'firebase/app'
 import "firebase/database";
+import {useFonts} from "expo-font";
 
 const firebaseConfig = {
     apiKey: "AIzaSyCvE6qJ25aP9UsiaqXbcr9Bgmh76qlQG8c",
@@ -30,6 +31,16 @@ const Stack = createStackNavigator<GameInitParam>()
 const store = createStore(rootReducer)
 
 export default function App() {
+    const [loaded] = useFonts({
+        netmarbleB: require('./assets/fonts/netmarbleB.ttf'),
+        netmarbleL: require('./assets/fonts/netmarbleL.ttf'),
+        netmarbleM: require('./assets/fonts/netmarbleM.ttf')
+    });
+
+    if(!loaded) {
+        return null
+    }
+
     return (
         <Provider store={store}>
             <RootSiblingParent>

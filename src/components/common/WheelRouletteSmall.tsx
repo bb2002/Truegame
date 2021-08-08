@@ -76,9 +76,10 @@ const Styles = StyleSheet.create({
     },
     text: {
         textAlign: "center",
-        fontSize: 28,
+        fontSize: 20,
         color: "white",
         fontWeight: "bold",
+        fontFamily: 'netmarbleB'
     }
 })
 
